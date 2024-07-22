@@ -3,8 +3,7 @@ def gcd(a, b):
         return a
     else:
         return gcd(b, a % b)
-
-
+        
 try:
     a = int(input("Введите первое число: "))
     b = int(input("Введите второе число: "))
