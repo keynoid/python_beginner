@@ -1,0 +1,3 @@
+apple: 90
+banana: 75
+carrot: 45
