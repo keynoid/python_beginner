@@ -8,7 +8,6 @@ with open('input.txt', 'r') as text_file:
         except Exception:
             print(f'Invalid input - {line}')
 
-
 average = sum([int(mark) for mark in students.values()]) / len(students)
 
 with open('output.txt', 'w') as text_file:
