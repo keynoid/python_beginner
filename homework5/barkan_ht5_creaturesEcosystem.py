@@ -9,8 +9,7 @@ class Species:
         self.lifespan = lifespan
 
     def __str__(self):
-        return (f"Вид: {self.name}, Размер: {self.size}, Тип пищи: {self.food_type}, "
-                f"Среда обитания: {self.habitat}, Продолжительность жизни: {self.lifespan}")
+        return f"Вид: {self.name}, Размер: {self.size}, Тип пищи: {self.food_type}, Среда обитания: {self.habitat}, Продолжительность жизни: {self.lifespan}"
 
 class Animal:
     def __init__(self, species, age=0, hunger=50, gender=None):
@@ -18,23 +17,24 @@ class Animal:
         self.age = age
         self.hunger = hunger
         self.gender = gender if gender else random.choice(['Самец', 'Самка'])
+        self.id = id(self)
 
     def age_one_year(self):
         self.age += 1
 
     def __str__(self):
-        return (f"Животное вида: {self.species.name}, Возраст: {self.age}, Сытость: {self.hunger}, Пол: {self.gender}")
+        return f"ID: {self.id}, Вид: {self.species.name}, Возраст: {self.age}, Сытость: {self.hunger}, Пол: {self.gender}"
 
 class Ecosystem:
     def __init__(self):
         self.species_list = [
-            Species("Креветка", size=1, food_type="растительная", habitat="вода", lifespan=2),
-            Species("Орел", size=10, food_type="животная", habitat="воздух", lifespan=35),
-            Species("Тигр", size=40, food_type="животная", habitat="земля", lifespan=25),
-            Species("Лошадь", size=60, food_type="растительная", habitat="земля", lifespan=27)
+            Species("Креветка", 1, "растительная", "вода", 2),
+            Species("Орел", 10, "животная", "воздух", 35),
+            Species("Тигр", 40, "животная", "земля", 25),
+            Species("Лошадь", 60, "растительная", "земля", 27)
         ]
         self.animals = []
-        self.plant_food = 1395
+        self.plant_food = 1000
 
     def add_animal(self, species_name, age=0, hunger=50, gender=None):
         species = next((s for s in self.species_list if s.name == species_name), None)
@@ -47,7 +47,7 @@ class Ecosystem:
 
     def increase_plant_food(self, amount):
         self.plant_food += amount
-        print(f"Запас растительной пищи увеличен на {amount}. Запасов всего: {self.plant_food}")
+        print(f"Запас растительной пищи увеличен на {amount}. Теперь всего: {self.plant_food}")
 
     def view_animals(self):
         if self.animals:
@@ -58,19 +58,20 @@ class Ecosystem:
             print("Животные отсутствуют.")
 
     def view_species(self):
+        print("Доступные виды животных:")
         for species in self.species_list:
             print(species)
 
     def view_animal_info(self, animal_id):
-        animal = next((a for a in self.animals if id(a) == animal_id), None)
+        animal = next((a for a in self.animals if a.id == animal_id), None)
         if animal:
             print(animal)
         else:
             print("Животное не найдено.")
 
     def attempt_reproduction(self, animal_id1, animal_id2):
-        animal1 = next((a for a in self.animals if id(a) == animal_id1), None)
-        animal2 = next((a for a in self.animals if id(a) == animal_id2), None)
+        animal1 = next((a for a in self.animals if a.id == animal_id1), None)
+        animal2 = next((a for a in self.animals if a.id == animal_id2), None)
 
         if animal1 and animal2 and animal1.species == animal2.species and animal1.gender != animal2.gender:
             if animal1.species.habitat == 'вода' and animal1.hunger > 50 and animal2.hunger > 50:
@@ -118,7 +119,7 @@ view_species - Посмотреть все виды животных
 view_animal_info <animal_id> - Посмотреть информацию о конкретном животном
 attempt_reproduction <animal_id1> <animal_id2> - Попробовать размножить двух животных одного вида
 time_step - Пройти шаг времени
-exit - Выйти
+exit - Выйти из игры
 """)
 
 def main():
@@ -129,7 +130,7 @@ def main():
     ecosystem.view_species()
 
     while True:
-        command = input("Введите команду (наберите 'help' для списка команд): ").strip()
+        command = input("Введите команду (или наберите 'help' для списка команд): ").strip()
 
         if command.startswith('add_animal'):
             _, species_name, *args = command.split()
@@ -162,8 +163,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-#
-# add_animal Лошадь 2 50 Самка
-# add_animal Лошадь 2 50 Самец
-# add_animal Тигр 10 100 Самка
-# add_animal Тигр 2 70 Самец
